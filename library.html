@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mapa en 3D</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.87/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.87/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <style>
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cesiumContainer"></div>
+    <script>
+      // Crea el visor Cesium
+      var viewer = new Cesium.Viewer('cesiumContainer');
+
+      // Carga el archivo geotiff
+      var layer = new Cesium.GeoTiffImageryProvider({
+        url: 'https://raw.githubusercontent.com/mariogape/3d_map_v2/main/3d_map.tif'
+      });
+
+      // Agrega el archivo geotiff como una capa al visor
+      viewer.imageryLayers.addImageryProvider(layer);
+
+      // Configura la posición y altura inicial de la cámara
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(-74.0059, 40.7128, 10000)
+      });
+    </script>
+  </body>
+</html>
