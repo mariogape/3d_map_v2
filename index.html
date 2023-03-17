@@ -1,37 +1,52 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Mapa en 3D</title>
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.87/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.87/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa 3D del Toubkal en Marruecos</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.88/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.88/Build/Cesium/Widgets/widgets.css">
     <style>
-      #cesiumContainer {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div id="cesiumContainer"></div>
     <script>
-      // Crea el visor Cesium
-      var viewer = new Cesium.Viewer('cesiumContainer');
+        Cesium.Ion.defaultAccessToken = 'your_access_token_here';
 
-      // Carga el archivo geotiff
-      var layer = new Cesium.GeoTiffImageryProvider({
-        url: 'https://raw.githubusercontent.com/mariogape/3d_map_v2/main/3d_map.tif'
-      });
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+            terrainProvider: Cesium.createWorldTerrain(),
+            maximumZoomDistance: 2000000 // ajustar la distancia máxima de zoom para una escala de 1:50,000
+        });
 
-      // Agrega el archivo geotiff como una capa al visor
-      viewer.imageryLayers.addImageryProvider(layer);
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(-7.6003, 31.0704, 2000), // ajustar la posición de la cámara para enfocar la zona del Toubkal
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-90),
+                roll: Cesium.Math.toRadians(0)
+            }
+        });
 
-      // Configura la posición y altura inicial de la cámara
-      viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(-74.0059, 40.7128, 10000)
-      });
+        var imageryLayers = viewer.imageryLayers;
+        var toubkalImageryProvider = new Cesium.SingleTileImageryProvider({
+            url: 'https://your_github_username.github.io/your_github_repository_name/your_image.tif',
+            rectangle: Cesium.Rectangle.fromDegrees(-7.634, 31.037, -7.566, 31.103), // ajustar la zona geográfica del mapa para la zona del Toubkal
+            minimumLevel: 0,
+            maximumLevel: 5
+        });
+
+        imageryLayers.addImageryProvider(toubkalImageryProvider);
     </script>
-  </body>
+</body>
 </html>
+
+
+
+
